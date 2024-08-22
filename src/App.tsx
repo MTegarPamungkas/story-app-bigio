@@ -5,10 +5,12 @@ import EditStoryPage from "./pages/EditStoryPage";
 import StoryDetailPage from "./pages/StoryDetailPage";
 import Sidebar from "./components/Sidebar";
 import DetailStoryPage from "./pages/DetailStoryPage";
+import { Analytics } from "@vercel/analytics/react"
 
 const App = () => {
   return (
     <Router>
+      <Analytics/>
       <Sidebar>
         <Routes>
           <Route path="/" element={<HomePage />} />
