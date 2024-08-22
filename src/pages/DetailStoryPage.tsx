@@ -28,7 +28,7 @@ const DetailStoryPage = () => {
       formData.append("category", updatedStory.category);
       formData.append("status", updatedStory.status);
       updatedStory.tags.forEach((tag) => formData.append("tags[]", tag));
-      formData.append("chapters", JSON.stringify(updatedStory.chapters)); // Convert chapters to JSON string
+      formData.append("chapters", JSON.stringify(updatedStory.chapters));
       if (updatedStory.coverImage) {
         formData.append("coverImage", updatedStory.coverImage);
       }

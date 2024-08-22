@@ -6,7 +6,6 @@ const API_URL = 'https://backend-story-app-bigio.vercel.app/api/story';
 // const API_URL = 'http://127.0.0.1:5000/api/story';
 
 export class StoryService {
-  // Fetch all stories
   public static async getStories(): Promise<Story[]> {
     const response = await axios.get<Story[]>(API_URL);
     return response.data;

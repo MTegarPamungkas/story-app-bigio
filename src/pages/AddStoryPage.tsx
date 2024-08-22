@@ -12,21 +12,17 @@ const AddStoryPage = () => {
     chapters: Chapter[];
   }) => {
     try {
-      // Save the story first
       const { story, chapters } = storyData;
       const response = await StoryService.addStory(story);
       const storyId = response._id;
 
-      // Save chapters associated with the story
       for (const chapter of chapters) {
         await StoryService.addChapter(storyId as string, chapter);
       }
 
-      // Navigate to the home page or wherever you want after successful save
       navigate("/");
     } catch (error) {
       console.error("Error saving story or chapters:", error);
-      // Handle errors appropriately
     }
   };
 

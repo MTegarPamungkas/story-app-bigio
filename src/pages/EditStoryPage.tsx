@@ -29,7 +29,6 @@ const EditStoryPage = () => {
       formData.append("status", updatedStory.status);
       updatedStory.tags.forEach((tag) => formData.append("tags[]", tag));
 
-      // Convert chapters to JSON string
       formData.append("chapters", JSON.stringify(updatedStory.chapters));
 
       if (updatedStory.coverImage) {

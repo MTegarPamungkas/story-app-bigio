@@ -102,10 +102,8 @@ const EditStoryForm: React.FC<EditStoryFormProps> = ({ story, onSubmit }) => {
 
   const handleDeleteChapter = async (chapterId: string) => {
     try {
-      // Remove chapter from local state
       setChapters(chapters.filter((chapter) => chapter._id !== chapterId));
 
-      // Optionally, you could also call an API to delete the chapter from the backend if needed
       if (story._id) {
         await StoryService.deleteChapter(story._id, chapterId);
       }
@@ -216,7 +214,6 @@ const EditStoryForm: React.FC<EditStoryFormProps> = ({ story, onSubmit }) => {
         </CardContent>
       </Card>
 
-      {/* Chapter Section */}
       <Box mt={3}>
         <Typography variant="h6">Chapters</Typography>
         <Button

@@ -131,14 +131,12 @@ const StoryTable: React.FC<StoryTableProps> = ({
         </Table>
       </TableContainer>
 
-      {/* Menu for actions */}
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
         <MenuItem onClick={handleDetail}>View Details</MenuItem>
         <MenuItem onClick={handleEdit}>Edit</MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>
 
-      {/* Snackbar for notifications */}
       <Snackbar
         open={openSnackbar}
         autoHideDuration={6000}

@@ -1,7 +1,7 @@
-// src/pages/HomePage.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useStories } from "../hooks/useStories";
 import StoryTable from "../components/StoryTable";
+import FilterModal from "../components/FilterModal";
 import { Box, TextField, Button, useTheme, useMediaQuery } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListIcon from "@mui/icons-material/FilterList";
@@ -9,10 +9,16 @@ import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const { stories, loading, setStories } = useStories(); // Get setStories from useStories
+  const { stories, loading, setStories } = useStories();
   const [search, setSearch] = useState("");
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filteredStories, setFilteredStories] = useState(stories);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  useEffect(() => {
+    setFilteredStories(stories);
+  }, [stories]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
@@ -20,6 +26,21 @@ const HomePage = () => {
 
   const handleAddStoryClick = () => {
     navigate("/add-story");
+  };
+
+  const handleFilterClick = () => {
+    setFilterOpen(true);
+  };
+
+  const handleFilterApply = (category: string, status: string) => {
+    let filtered = stories;
+    if (category) {
+      filtered = filtered.filter((story) => story.category === category);
+    }
+    if (status) {
+      filtered = filtered.filter((story) => story.status === status);
+    }
+    setFilteredStories(filtered);
   };
 
   if (loading) return <div>Loading...</div>;
@@ -44,7 +65,11 @@ const HomePage = () => {
               >
                 Add Story
               </Button>
-              <Button variant="outlined" startIcon={<FilterListIcon />}>
+              <Button
+                variant="outlined"
+                startIcon={<FilterListIcon />}
+                onClick={handleFilterClick}
+              >
                 Filter
               </Button>
             </Box>
@@ -60,7 +85,11 @@ const HomePage = () => {
           />
           {!isMobile && (
             <Box display="flex" gap={2}>
-              <Button variant="outlined" startIcon={<FilterListIcon />}>
+              <Button
+                variant="outlined"
+                startIcon={<FilterListIcon />}
+                onClick={handleFilterClick}
+              >
                 Filter
               </Button>
               <Button
@@ -73,8 +102,18 @@ const HomePage = () => {
             </Box>
           )}
         </Box>
-        <StoryTable stories={stories} search={search} setStories={setStories} />
+        <StoryTable
+          stories={filteredStories}
+          search={search}
+          setStories={setStories}
+        />
       </Box>
+
+      <FilterModal
+        open={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        onApply={handleFilterApply}
+      />
     </div>
   );
 };
