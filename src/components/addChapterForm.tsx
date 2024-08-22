@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Box, TextField, Button, Typography, Modal } from "@mui/material";
-import { Chapter } from "../types/chapter"; // Define your Chapter interface
-import { StoryService } from "../services/storyService"; // Update import path as needed
+import { Chapter } from "../types/chapter";
 
 interface AddChapterFormProps {
   open: boolean;

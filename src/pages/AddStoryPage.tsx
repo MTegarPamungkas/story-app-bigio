@@ -1,4 +1,3 @@
-import React from "react";
 import AddStoryForm from "../components/AddStoryForm";
 import { Story } from "../types/story";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +19,7 @@ const AddStoryPage = () => {
 
       // Save chapters associated with the story
       for (const chapter of chapters) {
-        await StoryService.addChapter(storyId, chapter);
+        await StoryService.addChapter(storyId as string, chapter);
       }
 
       // Navigate to the home page or wherever you want after successful save

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Story } from '../types/story'; 
 import { Chapter } from '../types/chapter'; 
 
-const API_URL = 'http://127.0.0.1:5000/api/story';
+const API_URL = 'https://backend-story-app-bigio.vercel.app/api/story';
 
 export class StoryService {
   // Fetch all stories
@@ -18,7 +18,9 @@ export class StoryService {
   }
 
   // Add a new story with chapters
-  public static async addStory(story: Story): Promise<{ id: string }> {
+  public static async addStory(story: Story): Promise<{
+      [x: string]: unknown; id: string 
+}> {
     const formData = new FormData();
     formData.append('title', story.title || '');
     formData.append('writer', story.writer || '');
