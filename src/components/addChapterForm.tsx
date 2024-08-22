@@ -17,7 +17,11 @@ const AddChapterForm: React.FC<AddChapterFormProps> = ({
   const [content, setContent] = useState("");
 
   const handleSave = () => {
-    const newChapter: Chapter = { title, content };
+    const newChapter: Chapter = {
+      title,
+      content,
+      updatedAt: "",
+    };
     onSave(newChapter);
     setTitle("");
     setContent("");

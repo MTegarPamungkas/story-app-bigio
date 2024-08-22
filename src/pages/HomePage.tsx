@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const { stories, loading } = useStories();
+  const { stories, loading, setStories } = useStories(); // Get setStories from useStories
   const [search, setSearch] = useState("");
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -73,7 +73,7 @@ const HomePage = () => {
             </Box>
           )}
         </Box>
-        <StoryTable stories={stories} search={search} />
+        <StoryTable stories={stories} search={search} setStories={setStories} />
       </Box>
     </div>
   );

@@ -1,5 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Box, TextField, Button, Modal, Typography } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  TextField,
+  Button,
+} from "@mui/material";
 import { Chapter } from "../types/chapter";
 
 interface EditChapterFormProps {
@@ -18,35 +24,21 @@ const EditChapterForm: React.FC<EditChapterFormProps> = ({
   const [title, setTitle] = useState(chapter.title);
   const [content, setContent] = useState(chapter.content);
 
-  useEffect(() => {
-    setTitle(chapter.title);
-    setContent(chapter.content);
-  }, [chapter]);
-
   const handleSave = () => {
-    onSave({ ...chapter, title, content });
+    const updatedChapter: Chapter = {
+      ...chapter,
+      title,
+      content,
+    };
+    onSave(updatedChapter);
   };
 
   return (
-    <Modal open={open} onClose={onClose}>
-      <Box
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: 400,
-          bgcolor: "background.paper",
-          borderRadius: 2,
-          boxShadow: 24,
-          p: 4,
-        }}
-      >
-        <Typography variant="h6" component="h2">
-          Edit Chapter
-        </Typography>
+    <Dialog open={open} onClose={onClose}>
+      <DialogTitle>Edit Chapter</DialogTitle>
+      <DialogContent>
         <TextField
-          label="Title"
+          label="Chapter Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           fullWidth
@@ -69,8 +61,8 @@ const EditChapterForm: React.FC<EditChapterFormProps> = ({
         >
           Save Changes
         </Button>
-      </Box>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 };
 

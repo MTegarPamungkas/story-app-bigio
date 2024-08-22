@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import EditStoryForm from "../components/EditStoryForm";
 import { Story } from "../types/story";
@@ -28,12 +28,20 @@ const EditStoryPage = () => {
       formData.append("category", updatedStory.category);
       formData.append("status", updatedStory.status);
       updatedStory.tags.forEach((tag) => formData.append("tags[]", tag));
+
+      // Convert chapters to JSON string
+      formData.append("chapters", JSON.stringify(updatedStory.chapters));
+
       if (updatedStory.coverImage) {
         formData.append("coverImage", updatedStory.coverImage);
       }
 
-      await StoryService.updateStory(id, formData);
-      navigate("/");
+      try {
+        await StoryService.updateStory(id, formData);
+        navigate("/");
+      } catch (error) {
+        console.error("Error updating story:", error);
+      }
     }
   };
 

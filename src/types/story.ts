@@ -8,7 +8,7 @@ import { Chapter } from "./chapter";
     category: string;
     tags: string[];
     status: string;
-    coverImage?: File | null;
+    coverImage?: File | null | string;
     chapters?: Chapter[]; 
   }
   

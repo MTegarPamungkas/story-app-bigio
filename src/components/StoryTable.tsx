@@ -1,4 +1,3 @@
-// src/components/StoryTable.tsx
 import React, { useState } from "react";
 import {
   Table,
@@ -12,20 +11,30 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useNavigate } from "react-router-dom";
 import { Story } from "../types/story";
+import { StoryService } from "../services/storyService";
 
 interface StoryTableProps {
   stories: Story[];
   search: string;
+  setStories: React.Dispatch<React.SetStateAction<Story[]>>;
 }
 
-const StoryTable: React.FC<StoryTableProps> = ({ stories, search }) => {
+const StoryTable: React.FC<StoryTableProps> = ({
+  stories,
+  search,
+  setStories,
+}) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedStory, setSelectedStory] = useState<Story | null>(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const handleClick = (event: React.MouseEvent<HTMLElement>, story: Story) => {
     setAnchorEl(event.currentTarget);
@@ -48,6 +57,27 @@ const StoryTable: React.FC<StoryTableProps> = ({ stories, search }) => {
       navigate(`/edit-story/${selectedStory._id}`);
     }
     handleClose();
+  };
+
+  const handleDelete = async () => {
+    if (selectedStory && selectedStory._id) {
+      try {
+        await StoryService.deleteStory(selectedStory._id);
+        setStories((prevStories) =>
+          prevStories.filter((story) => story._id !== selectedStory._id)
+        );
+        setSnackbarMessage("Story deleted successfully.");
+        setOpenSnackbar(true);
+      } catch (error: unknown) {
+        setSnackbarMessage(`Failed to delete the story. ${error}`);
+        setOpenSnackbar(true);
+      }
+      handleClose();
+    }
+  };
+
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
   };
 
   return (
@@ -105,8 +135,19 @@ const StoryTable: React.FC<StoryTableProps> = ({ stories, search }) => {
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
         <MenuItem onClick={handleDetail}>View Details</MenuItem>
         <MenuItem onClick={handleEdit}>Edit</MenuItem>
-        <MenuItem>Delete</MenuItem>
+        <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>
+
+      {/* Snackbar for notifications */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert onClose={handleSnackbarClose} severity="info">
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

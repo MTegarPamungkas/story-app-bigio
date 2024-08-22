@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import EditStoryForm from "../components/EditStoryForm";
 import { Story } from "../types/story";
 import { StoryService } from "../services/storyService";
+import DetailStory from "../components/DetailStory";
 
 const DetailStoryPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -28,6 +28,7 @@ const DetailStoryPage = () => {
       formData.append("category", updatedStory.category);
       formData.append("status", updatedStory.status);
       updatedStory.tags.forEach((tag) => formData.append("tags[]", tag));
+      formData.append("chapters", JSON.stringify(updatedStory.chapters)); // Convert chapters to JSON string
       if (updatedStory.coverImage) {
         formData.append("coverImage", updatedStory.coverImage);
       }
@@ -41,8 +42,8 @@ const DetailStoryPage = () => {
 
   return (
     <div>
-      <h1>Edit Story</h1>
-      <EditStoryForm story={story} onSubmit={handleEditStory} />
+      <h1>Detail Story</h1>
+      <DetailStory story={story} onSubmit={handleEditStory} />
     </div>
   );
 };

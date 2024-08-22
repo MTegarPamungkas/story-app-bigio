@@ -3,6 +3,7 @@ import { Story } from '../types/story';
 import { Chapter } from '../types/chapter'; 
 
 const API_URL = 'https://backend-story-app-bigio.vercel.app/api/story';
+// const API_URL = 'http://127.0.0.1:5000/api/story';
 
 export class StoryService {
   // Fetch all stories
@@ -11,13 +12,11 @@ export class StoryService {
     return response.data;
   }
 
-  // Fetch a specific story by ID
   public static async getStoryById(id: string): Promise<Story> {
     const response = await axios.get<Story>(`${API_URL}/${id}`);
     return response.data;
   }
 
-  // Add a new story with chapters
   public static async addStory(story: Story): Promise<{
       [x: string]: unknown; id: string 
 }> {
@@ -28,7 +27,6 @@ export class StoryService {
     formData.append('category', story.category || '');
     formData.append('status', story.status || '');
     
-    // Ensure tags is an array, even if it's empty
     (story.tags || []).forEach(tag => formData.append('tags[]', tag));
 
     if (story.coverImage) {
@@ -44,6 +42,7 @@ export class StoryService {
     return response.data;
   }
 
+  
   public static async addChapter(storyId: string, chapter: Chapter): Promise<void> {
     const chapterData = {
       title: chapter.title || '',
@@ -53,7 +52,6 @@ export class StoryService {
     await axios.post(`${API_URL}/${storyId}/chapter`, chapterData);
   }
 
-  // Update an existing story
   public static async updateStory(id: string, formData: FormData): Promise<void> {
     await axios.put(`${API_URL}/${id}`, formData, {
       headers: {
@@ -62,13 +60,13 @@ export class StoryService {
     });
   }
 
-  // Add a new chapter to an existing story
-//   public static async addChapter(storyId: string, chapter: Chapter): Promise<void> {
-//     const chapterData = {
-//       title: chapter.title,
-//       content: chapter.content,
-//     };
+  public static async deleteChapter(storyId: string, chapterId: string): Promise<void> {
+    await axios.delete(`${API_URL}/${storyId}/chapter/${chapterId}`);
+  }
+  
 
-//     await axios.post(`${API_URL}/${storyId}/chapter`, chapterData);
-//   }
+  public static async deleteStory(id: string): Promise<void> {
+    await axios.delete(`${API_URL}/${id}`);
+  }
+
 }
